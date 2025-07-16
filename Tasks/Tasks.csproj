@@ -7,8 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="connect-sdk-dotnet" Version="3.47.0" />
+      <PackageReference Include="JetBrains.dotMemoryUnit" Version="3.2.20220510" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
+      <PackageReference Include="Microsoft.ProgramSynthesis.Extraction.Text" Version="10.13.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="System.Linq" Version="4.3.0" />
     </ItemGroup>
 

@@ -1,3 +1,4 @@
+using Ingenico.Connect.Sdk.DefaultImpl;
 using Microsoft.EntityFrameworkCore;
 using Tasks.Task.Data;
 
@@ -9,7 +10,7 @@ public class Program
         {
             var builder = WebApplication.CreateBuilder(args); // Создаем строитель приложения
 
-            string? connection = builder.Configuration.GetConnectionString("DefaultConnection"); // Получаем строку подключения из файла конфигурации appsettings.json
+            string? connection = builder.Configuration.GetConnectionString(nameof(DefaultConnection)); // Получаем строку подключения из файла конфигурации appsettings.json
 
             builder.Services.AddDbContext<TaskDbContext>(options => options.UseSqlServer(connection)); // Регистрируем сервис базы данных (ContactDbContext) в контейнере зависимостей
 
