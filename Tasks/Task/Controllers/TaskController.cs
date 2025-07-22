@@ -11,28 +11,31 @@ public class TaskController : ControllerBase
 
     public TaskController(TaskDbContext context)
     {
-        // Когда приложение запускает твой контроллер, оно само передаёт сюда готовый доступ к базе (context).
+        // When the application starts your controller, it itself passes ready access to the database (context) here.
         _context = context;
     }
-
+    
     [HttpPost]
-    public IActionResult CreateTask([FromBody] TaskInfo task)
+    public IActionResult CreatedTask([FromBody] CreateTaskRequest request)
     {
-        // Добавляем новый контакт в базу через контекст
+        var task = new TaskInfo();
+        task.Description = request.Description; // сделали 
+        // Add a new contact to the database via context
         _context.TaskInfos.Add(task);
-        // Сохраняем изменения в базе данных
+        // Save changes to the database
         _context.SaveChanges();
-        return Ok(task);
+        var response = new TaskResponse() { Id = task.Id, Description = task.Description, Completed = task.Completed };
+        return Created("", response);
     }
-
     [HttpGet]
-    public IActionResult GetTasks(int? skip, int? limit, bool? completed)
+    public IActionResult GetTasks( int? skip, int? limit, bool? completed)
     {
        var taskQuery = _context.TaskInfos.AsQueryable();
        if (completed.HasValue)
        {
            taskQuery = taskQuery.Where(t => t.Completed == completed);
-       }
+       } 
+       
 
        if (limit.HasValue && limit.Value > 0)
        {
@@ -43,35 +46,46 @@ public class TaskController : ControllerBase
        {
            taskQuery = taskQuery.Skip(skip.Value);
        }
-       var tasks = taskQuery.ToList();
-       return Ok(tasks);
-    }
 
+       var tasks = taskQuery.ToList();
+       var response = new List<TaskResponse>();
+       foreach (var task in tasks)
+       {
+           var respons = new TaskResponse() { Id = task.Id, Description = task.Description, Completed = task.Completed };
+           response.Add(respons);
+       }
+       return Ok(response);
+    }
+    
     [HttpGet, Route("{id}")]
     public IActionResult GetTaskById(int id)
     {
-        var task = _context.TaskInfos.FirstOrDefault(x => x.id == id);
-        if (task == null) return NotFound(new { message = "Пользователь не найден" });
-        return Accepted(task);
+        var tasks = _context.TaskInfos.FirstOrDefault(x => x.Id == id);
+        if (tasks == null) return NotFound(new { message = "Contact not found" });
+        _context.SaveChanges();
+        var response = new TaskResponse() { Id = tasks.Id, Description = tasks.Description, Completed = tasks.Completed };
+        return Ok(response);
     }
     [HttpPut, Route("{id}")]
-    public IActionResult UpdateTaskById([FromBody] TaskInfo tasks, int id)
+    public IActionResult UpdateTaskById([FromBody]UpdateTaskRequest update, int id)
     {
-        var task = _context.TaskInfos.FirstOrDefault(t => t.id == id);
+        var task = _context.TaskInfos.FirstOrDefault(t => t.Id == id);
         if (task == null) return NotFound(new { error = "Contact not found" });
-        task.Completed = tasks.Completed;
+        task.Completed = update.Completed;
         _context.SaveChanges();
-        return Accepted(task);
+        var response = new TaskResponse() {  Id = task.Id, Description = task.Description, Completed = task.Completed };
+        return Accepted(response);
     }
     
     [HttpDelete, Route("{id}")]
-    public IActionResult DeleteTaskById([FromBody] TaskInfo tasks, int id)
+    public IActionResult DeleteTaskById(int id)
     {
-        var task = _context.TaskInfos.FirstOrDefault(t => t.id == id);
+        var task = _context.TaskInfos.FirstOrDefault(t => t.Id == id);
         if (task == null) return NotFound(new { error = "Contact not found" });
         _context.Remove(task);
         _context.SaveChanges();
-        return Ok(tasks);
+        var response = new TaskResponse() { Id = task.Id, Description = task.Description, Completed = task.Completed };
+        return Ok(response);
     }
 }
 

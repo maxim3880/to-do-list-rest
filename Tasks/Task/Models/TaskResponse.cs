@@ -1,8 +1,6 @@
-
-
 namespace Tasks.Task.Models;
 
-public class TaskInfo
+public class TaskResponse
 {
     public int Id { get; set; }
     public string Description { get; set; }

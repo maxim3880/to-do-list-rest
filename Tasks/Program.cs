@@ -8,17 +8,17 @@ public class Program
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args); // Создаем строитель приложения
+            var builder = WebApplication.CreateBuilder(args);// Create an application builder
 
-            string? connection = builder.Configuration.GetConnectionString(nameof(DefaultConnection)); // Получаем строку подключения из файла конфигурации appsettings.json
+            string? connection = builder.Configuration.GetConnectionString(nameof(DefaultConnection)); // Get the connection string from the appsettings.json configuration file
 
-            builder.Services.AddDbContext<TaskDbContext>(options => options.UseSqlServer(connection)); // Регистрируем сервис базы данных (ContactDbContext) в контейнере зависимостей
+            builder.Services.AddDbContext<TaskDbContext>(options => options.UseSqlServer(connection)); // Register the database service (Contact DbContext) in the dependency container
 
-            builder.Services.AddControllers(); // Добавляем сервис контроллеров
+            builder.Services.AddControllers(); // Add controller service
 
             var app = builder.Build(); 
 
-            app.MapControllers(); // Указываем приложению, что нужно автоматически искать и подключать контроллеры по их маршрутам
+            app.MapControllers(); // Tell the application to automatically search for and connect controllers by their routes
 
             app.Run();
         }

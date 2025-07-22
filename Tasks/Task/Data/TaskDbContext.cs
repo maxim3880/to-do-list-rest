@@ -5,13 +5,13 @@ namespace Tasks.Task.Data;
 
 public  class TaskDbContext : DbContext
 {
-    // Свойство DbSet представляет собой коллекцию объектов, которая сопоставляется с определенной таблицей в базе данных
+    // The DbSet property is a collection of objects that maps to a specific table in the database
     public DbSet<TaskInfo> TaskInfos { get; set; } = null!;
-    // В конструкторе класса ContactDbContext через параметр options будут передаваться настройки контекста данных
+    // In the constructor of the Contact DbContext class, the data context settings will be passed through the options parameter
     public TaskDbContext(DbContextOptions<TaskDbContext> options)
         : base(options)
     {
-        Database.EnsureCreated(); // создаем базу данных при первом обращении
+        Database.EnsureCreated(); // create database on first access
     }
 
 }
