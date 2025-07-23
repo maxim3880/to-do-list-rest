@@ -3,7 +3,7 @@ using Tasks.Task.Models;
 
 namespace Tasks.Task.Data;
 
-public  class TaskDbContext : DbContext
+public class TaskDbContext : DbContext // changed class to interface
 {
     // The DbSet property is a collection of objects that maps to a specific table in the database
     public DbSet<TaskInfo> TaskInfos { get; set; } = null!;
