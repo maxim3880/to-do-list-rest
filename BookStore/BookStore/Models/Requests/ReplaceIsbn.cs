@@ -1,4 +1,4 @@
-namespace BookStore.BookStore.Models;
+namespace BookStore.BookStore.Models.Requests;
 
 public class ReplaceIsbn
 {

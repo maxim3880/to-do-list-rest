@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.BookStore.Models;
+namespace BookStore.BookStore.Entities;
 
 public class AddListOfBooks
 {
@@ -8,4 +8,4 @@ public class AddListOfBooks
     public int Id { get; set; }
     public int UserId { get; set; }
     public string ISBN { get; set; }
-}
+}          

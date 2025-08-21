@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
-namespace BookStore.BookStore.Models;
+namespace BookStore.BookStore.Entities;
 
 public class BookInfo
 {

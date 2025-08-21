@@ -1,4 +1,4 @@
-namespace BookStore.BookStore.Models;
+namespace BookStore.BookStore.Models.Responses;
 
 public class BooksResult
 {

@@ -1,10 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-
-namespace BookStore.BookStore.Models;
+namespace BookStore.BookStore.Models.Responses;
 public class BookResponse
 {
-    [Key]
     public string? ISBN { get; set; }
     public string Title { get; set; }
     public string SubTitle { get; set; }

@@ -12,7 +12,10 @@ public class Program
 
         string? connection = builder.Configuration.GetConnectionString(nameof(DefaultConnection)); // Get the connection string from the appsettings.json configuration file
 
-        builder.Services.AddDbContext<BookStoreDbContext>(options => options.UseSqlServer(connection)); // Register the database service (Contact DbContext) in the dependency container
+        builder.Services.AddDbContext<BookStoreDbContext, BookStoreDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+        // Register the database service (Contact DbContext) in the dependency container
 
         builder.Services.AddControllers(); // Add controller service
 
