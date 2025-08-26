@@ -1,18 +1,17 @@
 using BookStore.BookStore.Data;
 using BookStore.BookStore.Entities;
-using BookStore.BookStore.Models;
 using BookStore.BookStore.Models.Requests;
 using BookStore.BookStore.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace BookStore.BookStore.Controllers;
 
 public class BookStoreControllers : ControllerBase
 {
-    private readonly BookStoreDbContext _context;
+    private readonly IBookStoreDbContext _context;
 
-    public BookStoreControllers(BookStoreDbContext context)
+    public BookStoreControllers(IBookStoreDbContext context)
     {
         _context = context;
     }
@@ -51,10 +50,9 @@ public class BookStoreControllers : ControllerBase
     {
         var books = new AddListOfBooks(){UserId = request.UserId,ISBN = request.ISBN};
         var response = new AddListOfBooks(){UserId = books.UserId,ISBN = books.ISBN};
-        _context.Add(response);
+        _context.AddListOfBooks.Add(books);
         _context.SaveChanges();
         return Created("", response);
-        
     }
 
     [HttpPut, Route("/BookStore/v1/Book/{ISBN}")]
@@ -87,7 +85,7 @@ public class BookStoreControllers : ControllerBase
     {
         var  book = _context.AddListOfBooks.FirstOrDefault(t => t.ISBN == isbn);
         if (book == null) return NotFound(new { error = "Book with this ISBN not found" });
-        _context.Remove(book);
+        _context.AddListOfBooks.Remove(book);
         _context.SaveChanges();
         return Ok(new { message = $"Book with ISBN {isbn} deleted" });
     }

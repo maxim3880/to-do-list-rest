@@ -1,5 +1,4 @@
 using BookStore.BookStore.Data;
-using Ingenico.Connect.Sdk.DefaultImpl;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStore;
@@ -8,20 +7,22 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);// Create an application builder
+        var builder = WebApplication.CreateBuilder(args);
 
-        string? connection = builder.Configuration.GetConnectionString(nameof(DefaultConnection)); // Get the connection string from the appsettings.json configuration file
-
-        builder.Services.AddDbContext<BookStoreDbContext, BookStoreDbContext>(options =>
+        // Подключаем БД
+        builder.Services.AddDbContext<BookStoreDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        // Register the database service (Contact DbContext) in the dependency container
+        // Регистрируем интерфейс поверх реализации
+        builder.Services.AddScoped<IBookStoreDbContext>(provider => 
+            provider.GetRequiredService<BookStoreDbContext>());
 
-        builder.Services.AddControllers(); // Add controller service
+        // Регистрируем контроллеры
+        builder.Services.AddControllers();
 
-        var app = builder.Build(); 
+        var app = builder.Build();
 
-        app.MapControllers(); // Tell the application to automatically search for and connect controllers by their routes
+        app.MapControllers();
 
         app.Run();
     }
